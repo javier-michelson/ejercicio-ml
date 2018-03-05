@@ -32,7 +32,7 @@ public class SistemaMLConfig {
 	@Value("${com.ml.ejercicio.anguloVulcano:0}")
 	public double anguloVulcano;
 
-	@Value("${com.ml.dias.por.anio:365}")
+	@Value("${com.ml.dias.por.diasPorAnio:365}")
 	public int diasPorAnio;
 	
 	@Value("${com.ml.tolerancia.angulo.calculo.colineal:1}")

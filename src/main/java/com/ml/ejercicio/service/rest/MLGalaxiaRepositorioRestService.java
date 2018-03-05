@@ -10,16 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ml.ejercicio.domain.ResumenModelo;
 import com.ml.ejercicio.service.PrediccionClima;
 import com.ml.ejercicio.service.rest.dto.Dia;
 
 @RestController
-@RequestMapping("/pronostico")
-public class MLGalaxiaRespuestaRestService {
+@RequestMapping("/repositorio")
+public class MLGalaxiaRepositorioRestService {
 
-	private static final Logger logger = Logger.getLogger(MLGalaxiaRespuestaRestService.class.getName());
-
+	private static final Logger logger = Logger.getLogger(MLGalaxiaRepositorioRestService.class.getName());
+	
 	@Autowired
 	private PrediccionClima prediccionClima; 
 
@@ -29,22 +28,22 @@ public class MLGalaxiaRespuestaRestService {
 		return prediccionClima.generarModelo(anios).stream().map(dia -> new Dia(dia)).collect(Collectors.toList());
 	}
 	
-	@RequestMapping(path = { "/resumenModelo" }, method = { RequestMethod.GET })
-	public ResumenModelo generarResumenModelo(long dias) {
+	@RequestMapping(path = { "/generarModeloDias" }, method = { RequestMethod.GET })
+	public List<Dia> generarModelo(long dias) {
 		logger.info(new Formatter().format("Generar Modelo para los próximos %d días", dias).toString());
-		return prediccionClima.generarResumenModelo(dias);
+		return prediccionClima.generarModelo(dias).stream().map(dia -> new Dia(dia)).collect(Collectors.toList());
 	}
 	
-	@RequestMapping(path = { "/resumenModeloAnios" }, method = { RequestMethod.GET })
-	public ResumenModelo generarResumenModeloPorAnio(int anios) {
+	@RequestMapping(path = { "/obtenerModelo" }, method = { RequestMethod.GET })
+	public List<Dia> obtenerValores(int anios) {
 		logger.info(new Formatter().format("Generar Modelo para los próximos %d años", anios).toString());
-		return prediccionClima.generarResumenModelo(anios);
+		return prediccionClima.findValoresDelModelo(anios).stream().map(dia -> new Dia(dia)).collect(Collectors.toList());
 	}
-
-	@RequestMapping(path = { "/getEstadoClima" }, method = { RequestMethod.GET })
-	public Dia getEstadoTiempo(int dia) {
-		logger.info(new Formatter().format("Generar Modelo el día %d", dia).toString());
-		return new Dia(prediccionClima.getEstadoDelDia(dia));
+	
+	@RequestMapping(path = { "/obtenerModeloDias" }, method = { RequestMethod.GET })
+	public List<Dia> obtenerValores(long dias) {
+		logger.info(new Formatter().format("Generar Modelo para los próximos %d días", dias).toString());
+		return prediccionClima.findValoresDelModelo(dias).stream().map(dia -> new Dia(dia)).collect(Collectors.toList());
 	}
 
 }

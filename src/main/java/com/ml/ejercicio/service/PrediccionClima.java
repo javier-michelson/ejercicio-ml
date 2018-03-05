@@ -13,6 +13,7 @@ import com.ml.ejercicio.config.SistemaMLConfig;
 import com.ml.ejercicio.domain.Dia;
 import com.ml.ejercicio.domain.ResumenModelo;
 import com.ml.ejercicio.domain.SistemaSolar;
+import com.ml.ejercicio.repository.DiaRepository;
 import com.ml.ejercicio.util.CalculoDiaStrategy;
 
 /**
@@ -39,91 +40,89 @@ import com.ml.ejercicio.util.CalculoDiaStrategy;
  */
 @Component
 public class PrediccionClima {
-	
+
 	private static Logger logger = Logger.getLogger(PrediccionClima.class.getName());
-	
+
 	@Autowired
 	private SistemaMLConfig config;
-	
+
 	@Autowired
 	private SistemaSolar sistemaSolar;
-	
+
 	@Autowired
 	private CalculoDiaStrategy<SistemaSolar> calculoDiaStrategy;
-	
-	public long getPeriodosDeSequiaProximosDias(long dias) {
-		return 0;
+
+	@Autowired
+	private DiaRepository diaRepository;
+
+	/**
+	 * Genera y guarda el modelo para los n dias posteriores
+	 * 
+	 * @param anios
+	 * @return
+	 */
+	public List<Dia> generarModelo(int anios) {
+		List<Dia> resultado = this.generarModelo((long) anios * config.diasPorAnio);
+		this.diaRepository.saveAll(resultado);
+		return resultado;
 	}
 
-	public long getPeriodosDeLluviaProximosDias(long dias) {
-		return 0;
+	/**
+	 * Obtiene los valores persistidos para los anios indicados por parámetro
+	 * 
+	 * @param maximaCantidadDeAnios
+	 * @return
+	 */
+	public List<Dia> findValoresDelModelo(int maximaCantidadDeAnios) {
+		return this.diaRepository.findByDiaLessThanOrderByDia(maximaCantidadDeAnios * config.diasPorAnio);
 	}
 
-	public long getPicoDeLluviaProximosDias(long dias) {
-		return 0;
+	/**
+	 * Obtiene los valores persistids para los dias indicados por parámetro
+	 * 
+	 * @param maximaCantidadDeDias
+	 * @return
+	 */
+	public List<Dia> findValoresDelModelo(long maximaCantidadDeDias) {
+		return this.diaRepository.findByDiaLessThanOrderByDia(maximaCantidadDeDias);
 	}
 
-	public long getDiasOptimosProximosDias(int anios) {
-		return 0;
-	}
-
-	public long getPeriodosDeSequiaProximosAnios(int anios) {
-		return 0;
-	}
-
-	public long getPeriodosDeLluviaProximosAnios(int anios) {
-		return 0;
-	}
-
-	public long getPicoDeLluviaProximosAnios(int anios) {
-		return 0;
-	}
-
-	public long getDiasOptimosProximosAnios(int anios) {
-		return 0;
-	}
-	
-	public List<Dia> generarModelo (int anios){
-		return this.generarModelo((long)anios * config.diasPorAnio);
-	}
-	
-	public List<Dia> generarModelo (long dias){
+	public List<Dia> generarModelo(long dias) {
 		List<Dia> result = new ArrayList<Dia>();
-		for (int dia=0;dia<dias;dia++) {
+		for (int dia = 0; dia < dias; dia++) {
 			result.add(this.getEstadoDelDia(dia));
 		}
 		return result;
 	}
 
-	
 	public ResumenModelo generarResumenModelo(int anios) {
-		return this.generarResumenModelo((long)anios*config.diasPorAnio);
+		return this.generarResumenModelo((long) anios * config.diasPorAnio);
 	}
-	
+
 	public ResumenModelo generarResumenModelo(long dias) {
 		ResumenModelo result = new ResumenModelo();
-		
-		for (int dia=0;dia<dias;dia++) {
+
+		for (int dia = 0; dia < dias; dia++) {
 			Dia estadoDelDia = this.getEstadoDelDia(dia);
 			result.add(estadoDelDia);
 		}
-		
+
 		return result;
 	}
-	
+
 	public Dia getEstadoDelDia(long dia) {
 		SistemaSolar sistemaSolarDelDia = sistemaSolar.desplazar(dia);
 		if (calculoDiaStrategy.aplica(sistemaSolarDelDia)) {
 			return calculoDiaStrategy.calcular(sistemaSolarDelDia);
-		}else {
-			String message = new Formatter().format("No se pudo calcular el estado del dia %d",dia).toString();
+		} else {
+			String message = new Formatter().format("No se pudo calcular el estado del dia %d", dia).toString();
 			logger.severe(message);
 			throw new RuntimeException(message);
 		}
 	}
 
 	public SistemaSolar getSistemaSolar(long dia) {
-		return sistemaSolar;
+		return sistemaSolar.desplazar(dia);
 	}
-	
+
 }

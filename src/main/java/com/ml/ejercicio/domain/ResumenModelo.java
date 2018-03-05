@@ -6,7 +6,7 @@ public class ResumenModelo {
 	
 	long cantidadDiasLluvia = 0;
 	double valorDiaMasLluvioso = 0;
-	double valorDiaMenosLluvioso = 0;
+	double valorDiaMenosLluvioso = Integer.MAX_VALUE;
 	long cantidadDiasSequia = 0;
 	long cantidadDiasDesconocido = 0;
 	long cantidadDiasOptimos = 0;
@@ -18,7 +18,7 @@ public class ResumenModelo {
 		switch(dia.getEstado()) {
 			case LLUVIA:
 				this.addCantidadDiasLluvia(1);
-				this.setValorDiaMasLluvioso(dia.getNivel());
+				this.updateValorDiaLluvias(dia.getNivel());
 				break;
 			case SEQUIA:
 				this.addCantidadDiasSequia(1);
@@ -35,7 +35,7 @@ public class ResumenModelo {
 	protected void addCantidadDiasLluvia(long cantidad) {
 		cantidadDiasLluvia += cantidad;
 	}
-	protected void updateValorDiaLluvioso(double nivelLluvioso) {
+	protected void updateValorDiaLluvias(double nivelLluvioso) {
 		this.setValorDiaMasLluvioso(nivelLluvioso);
 		this.setValorDiaMenosLluvioso(nivelLluvioso);
 	}
@@ -43,7 +43,7 @@ public class ResumenModelo {
 		this.valorDiaMasLluvioso = Math.max(this.valorDiaMasLluvioso, valorDiaMasLluvioso);
 	}
 	protected void setValorDiaMenosLluvioso(double valorDiaMenosLluvioso) {
-		this.valorDiaMasLluvioso = Math.min(this.valorDiaMenosLluvioso, valorDiaMenosLluvioso);
+		this.valorDiaMenosLluvioso = Math.min(this.valorDiaMenosLluvioso, valorDiaMenosLluvioso);
 	}
 	protected void addCantidadDiasSequia(long cantidad) {
 		cantidadDiasSequia += cantidad;

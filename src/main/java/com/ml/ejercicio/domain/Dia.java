@@ -1,16 +1,30 @@
 package com.ml.ejercicio.domain;
 
+import javax.annotation.Nullable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
+@Entity
 public class Dia {
 
-	private long dia;
+	@Id
+	@Column
+	private Long dia;
 	
-	private Estado estado;
+	@Column
+	private Estado clima;
 	
+	@Column
+	@Nullable
 	private Double nivel;
+	
+	public Dia() {
+	}
 	
 	public Dia(long dia, Estado estado, Double nivel) {
 		this.dia = dia;
-		this.estado = estado;
+		this.clima = estado;
 		this.nivel = nivel;
 	}
 
@@ -19,7 +33,7 @@ public class Dia {
 	}
 
 	public Estado getEstado() {
-		return estado;
+		return clima;
 	}
 
 	public Double getNivel() {
