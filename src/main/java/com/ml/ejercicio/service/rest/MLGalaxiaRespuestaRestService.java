@@ -35,8 +35,8 @@ public class MLGalaxiaRespuestaRestService {
 		return prediccionClima.generarResumenModelo(dias);
 	}
 	
-	@RequestMapping(path = { "/resumenModelo" }, method = { RequestMethod.GET })
-	public ResumenModelo generarResumenModelo(int anios) {
+	@RequestMapping(path = { "/resumenModeloAnios" }, method = { RequestMethod.GET })
+	public ResumenModelo generarResumenModeloPorAnio(int anios) {
 		logger.info(new Formatter().format("Generar Modelo para los próximos %d años", anios).toString());
 		return prediccionClima.generarResumenModelo(anios);
 	}
