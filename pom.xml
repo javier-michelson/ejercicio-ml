@@ -98,8 +98,10 @@
 				<artifactId>appengine-maven-plugin</artifactId>
 				<version>1.9.60</version>
 				<configuration>
-					<app.id>ml-ejercicio-jfm-project</app.id>	
-    				<app.version>1</app.version>
+<!-- 					<app.id>ml-ejercicio-jfm-project</app.id> -->
+<!--     				<app.version>1</app.version> -->
+    				<appId>ml-ejercicio-jfm-project</appId>
+    				<version>1</version>
 				</configuration>
 			</plugin>
 			<plugin>
