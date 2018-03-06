@@ -7,8 +7,6 @@
 	<artifactId>ejercicio</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<app.id>ml-ejercicio-jfm-project</app.id>
-    <app.version>1</app.version>
 
 	<name>ejercicio-ml</name>
 	<description>Ejercicio ML - Spring Boot</description>
@@ -99,6 +97,10 @@
 				<groupId>com.google.appengine</groupId>
 				<artifactId>appengine-maven-plugin</artifactId>
 				<version>1.9.60</version>
+				<configuration>
+					<app.id>ml-ejercicio-jfm-project</app.id>	
+    				<app.version>1</app.version>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>com.google.cloud.tools</groupId>
