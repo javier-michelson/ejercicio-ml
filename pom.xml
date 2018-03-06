@@ -7,6 +7,8 @@
 	<artifactId>ejercicio</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
+	<app.id>ml-ejercicio-jfm-project</app.id>
+    <app.version>1</app.version>
 
 	<name>ejercicio-ml</name>
 	<description>Ejercicio ML - Spring Boot</description>
@@ -66,6 +68,12 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- Fix dependency issue for logging in Google App Engine -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jul-to-slf4j</artifactId>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
